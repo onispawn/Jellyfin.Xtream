@@ -184,11 +184,11 @@ public class CatchupChannel(ILogger<CatchupChannel> logger, IXtreamClient xtream
         List<StreamInfo> streams = await xtreamClient.GetLiveStreamsByCategoryAsync(plugin.Creds, categoryId, cancellationToken).ConfigureAwait(false);
         StreamInfo channel = streams.FirstOrDefault(s => s.StreamId == channelId)
             ?? throw new ArgumentException($"Channel with id {channelId} not found in category {categoryId}");
-        EpgListings epgs = await xtreamClient.GetEpgInfoAsync(plugin.Creds, channelId, cancellationToken).ConfigureAwait(false);
+        List<EpgInfo> epgs = await xtreamClient.GetEpgInfoAsync(plugin.Creds, channelId, cancellationToken).ConfigureAwait(false);
         List<ChannelItemInfo> items = [];
 
         // Create fallback single-stream catch-up if no EPG is available.
-        if (epgs.Listings.Count == 0)
+        if (epgs.Count == 0)
         {
             int durationMinutes = 24 * 60;
             return new()
@@ -213,7 +213,7 @@ public class CatchupChannel(ILogger<CatchupChannel> logger, IXtreamClient xtream
             };
         }
 
-        foreach (EpgInfo epg in epgs.Listings.Where(epg => epg.Start <= end && epg.End >= start))
+        foreach (EpgInfo epg in epgs.Where(epg => epg.Start <= end && epg.End >= start))
         {
             ParsedName parsedName = StreamService.ParseName(epg.Title);
             int durationMinutes = (int)Math.Ceiling((epg.End - epg.Start).TotalMinutes);
@@ -226,7 +226,7 @@ public class CatchupChannel(ILogger<CatchupChannel> logger, IXtreamClient xtream
             {
                 ContentType = ChannelMediaContentType.TvExtra,
                 DateCreated = epg.Start,
-                Id = StreamService.ToGuid(StreamService.CatchupStreamPrefix, channel.StreamId, epg.Id, day).ToString(),
+                Id = $"{StreamService.CatchupStreamPrefix}-{channel.StreamId}-{epg.Id}-{day}",
                 IsLiveStream = false,
                 MediaSources = sources,
                 MediaType = ChannelMediaType.Video,

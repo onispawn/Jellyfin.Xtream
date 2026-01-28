@@ -24,7 +24,7 @@ namespace Jellyfin.Xtream.Client;
 
 public interface IXtreamClient
 {
-    Task<EpgListings> GetEpgInfoAsync(ConnectionInfo connectionInfo, int streamId, CancellationToken cancellationToken);
+    Task<List<EpgInfo>> GetEpgInfoAsync(ConnectionInfo connectionInfo, int streamId, CancellationToken cancellationToken);
 
     Task<List<Category>> GetLiveCategoryAsync(ConnectionInfo connectionInfo, CancellationToken cancellationToken);
 

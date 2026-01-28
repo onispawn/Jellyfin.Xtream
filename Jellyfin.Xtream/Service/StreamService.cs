@@ -380,7 +380,7 @@ public partial class StreamService(IXtreamClient xtreamClient)
         }
 
         PluginConfiguration config = Plugin.Instance.Configuration;
-        string uri = $"{config.BaseUrl}{prefix}/{config.Username}/{config.Password}/{id}";
+        string uri = $"{config.ServerUrl}{prefix}/{config.Username}/{config.Password}/{id}";
         if (!string.IsNullOrEmpty(extension))
         {
             uri += $".{extension}";
@@ -389,7 +389,7 @@ public partial class StreamService(IXtreamClient xtreamClient)
         if (type == StreamType.CatchUp)
         {
             string? startString = start?.ToString("yyyy'-'MM'-'dd':'HH'-'mm", CultureInfo.InvariantCulture);
-            uri = $"{config.BaseUrl}/streaming/timeshift.php?username={config.Username}&password={config.Password}&stream={id}&start={startString}&duration={durationMinutes}";
+            uri = $"{config.ServerUrl}/streaming/timeshift.php?username={config.Username}&password={config.Password}&stream={id}&start={startString}&duration={durationMinutes}";
         }
 
         bool isLive = type == StreamType.Live;

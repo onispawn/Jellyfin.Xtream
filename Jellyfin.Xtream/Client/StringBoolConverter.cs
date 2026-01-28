@@ -38,7 +38,7 @@ public class StringBoolConverter : JsonConverter
             throw new ArgumentException("Value cannot be null.");
         }
 
-        return "1".Equals((string)reader.Value, StringComparison.Ordinal);
+        return "1".Equals(reader.Value.ToString(), StringComparison.Ordinal);
     }
 
     /// <inheritdoc />

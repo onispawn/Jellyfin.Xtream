@@ -80,6 +80,11 @@ public class XtreamController(IXtreamClient xtreamClient) : ControllerBase
     {
         Plugin plugin = Plugin.Instance;
         PlayerApi info = await xtreamClient.GetUserAndServerInfoAsync(plugin.Creds, cancellationToken).ConfigureAwait(false);
+
+        string serverUrl = string.IsNullOrWhiteSpace(info.ServerInfo.Url)
+            ? plugin.Configuration.BaseUrl
+            : info.ServerInfo.Url;
+
         return Ok(new ProviderTestResponse()
         {
             ActiveConnections = info.UserInfo.ActiveCons,
@@ -89,6 +94,7 @@ public class XtreamController(IXtreamClient xtreamClient) : ControllerBase
             ServerTimezone = info.ServerInfo.Timezone,
             Status = info.UserInfo.Status,
             SupportsMpegTs = info.UserInfo.AllowedOutputFormats.Contains("ts"),
+            ServerUrl = serverUrl
         });
     }
 

@@ -174,12 +174,12 @@ public class LiveTvService(IServerApplicationHost appHost, IHttpClientFactory ht
             items = new List<ProgramInfo>();
             Plugin plugin = Plugin.Instance;
             {
-                EpgListings epgs = await xtreamClient.GetEpgInfoAsync(plugin.Creds, streamId, cancellationToken).ConfigureAwait(false);
-                foreach (EpgInfo epg in epgs.Listings)
+                List<EpgInfo> epgs = await xtreamClient.GetEpgInfoAsync(plugin.Creds, streamId, cancellationToken).ConfigureAwait(false);
+                foreach (EpgInfo epg in epgs)
                 {
                     items.Add(new()
                     {
-                        Id = StreamService.ToGuid(StreamService.EpgPrefix, streamId, epg.Id, 0).ToString(),
+                        Id = $"{StreamService.EpgPrefix}-{streamId}-{epg.Id}-{0}",
                         ChannelId = channelId,
                         StartDate = epg.Start,
                         EndDate = epg.End,

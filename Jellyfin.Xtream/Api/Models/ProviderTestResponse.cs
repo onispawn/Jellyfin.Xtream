@@ -23,6 +23,11 @@ namespace Jellyfin.Xtream.Api.Models;
 public class ProviderTestResponse
 {
     /// <summary>
+    /// Gets or sets the ServerUrl for the provider.
+    /// </summary>
+    public string ServerUrl { get; set; } = string.Empty;
+
+    /// <summary>
     /// Gets or sets the status of provider.
     /// </summary>
     public string Status { get; set; } = string.Empty;

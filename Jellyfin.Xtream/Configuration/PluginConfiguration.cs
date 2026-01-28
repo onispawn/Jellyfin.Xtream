@@ -65,6 +65,11 @@ public class PluginConfiguration : BasePluginConfiguration
     public bool IsTmdbVodOverride { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets the server url for streaming.
+    /// </summary>
+    public string ServerUrl { get; set; } = string.Empty;
+
+    /// <summary>
     /// Gets or sets the channels displayed in Live TV.
     /// </summary>
     public SerializableDictionary<int, HashSet<int>> LiveTv { get; set; } = [];

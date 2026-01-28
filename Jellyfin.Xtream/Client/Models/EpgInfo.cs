@@ -23,10 +23,10 @@ namespace Jellyfin.Xtream.Client.Models;
 public class EpgInfo
 {
     [JsonProperty("id")]
-    public int Id { get; set; }
+    public string Id { get; set; } = string.Empty;
 
     [JsonProperty("epg_id")]
-    public int EpgId { get; set; }
+    public string EpgId { get; set; } = string.Empty;
 
     [JsonConverter(typeof(Base64Converter))]
     [JsonProperty("title")]

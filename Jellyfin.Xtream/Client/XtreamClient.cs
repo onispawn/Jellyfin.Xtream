@@ -41,6 +41,8 @@ public class XtreamClient(HttpClient client, ILogger<XtreamClient> logger) : IDi
 {
     private readonly JsonSerializerSettings _serializerSettings = new()
     {
+        Converters = { new FlexibleDateTimeConverter() },
+        DateParseHandling = DateParseHandling.None,
         Error = NullableEventHandler(logger),
     };
 
@@ -169,8 +171,8 @@ public class XtreamClient(HttpClient client, ILogger<XtreamClient> logger) : IDi
            $"/player_api.php?username={connectionInfo.UserName}&password={connectionInfo.Password}&action=get_live_categories",
            cancellationToken);
 
-    public Task<EpgListings> GetEpgInfoAsync(ConnectionInfo connectionInfo, int streamId, CancellationToken cancellationToken) =>
-         QueryApi<EpgListings>(
+    public Task<List<EpgInfo>> GetEpgInfoAsync(ConnectionInfo connectionInfo, int streamId, CancellationToken cancellationToken) =>
+         QueryApi<List<EpgInfo>>(
            connectionInfo,
            $"/player_api.php?username={connectionInfo.UserName}&password={connectionInfo.Password}&action=get_simple_data_table&stream_id={streamId}",
            cancellationToken);

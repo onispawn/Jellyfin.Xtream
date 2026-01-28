@@ -14,6 +14,8 @@ export default function (view) {
       view.querySelector('#Username').value = config.Username;
       view.querySelector('#Password').value = config.Password;
       view.querySelector('#UserAgent').value = config.UserAgent;
+      view.querySelector('#ServerUrl').value = config.ServerUrl;
+        
       Dashboard.hideLoadingMsg();
     });
 
@@ -25,6 +27,7 @@ export default function (view) {
       const time = view.querySelector("#ProviderTime");
       const timezone = view.querySelector("#ProviderTimezone");
       const mpegTs = view.querySelector("#ProviderMpegTs");
+      const serverUrlInput = view.querySelector('#ServerUrl');
 
       Xtream.fetchJson('Xtream/TestProvider').then(response => {
         status.innerText = response.Status;
@@ -34,6 +37,7 @@ export default function (view) {
         time.innerText = response.ServerTime;
         timezone.innerText = response.ServerTimezone;
         mpegTs.innerText = response.SupportsMpegTs;
+        serverUrlInput.value = response.ServerUrl;
       }).catch((_) => {
         status.innerText = "Failed. Check server logs.";
         expiry.innerText = "";
@@ -59,6 +63,7 @@ export default function (view) {
         config.Username = view.querySelector('#Username').value;
         config.Password = view.querySelector('#Password').value;
         config.UserAgent = view.querySelector('#UserAgent').value;
+        config.ServerUrl = view.querySelector('#ServerUrl').value;
         ApiClient.updatePluginConfiguration(pluginId, config).then((result) => {
           reloadStatus();
           Dashboard.processPluginConfigurationUpdateResult(result);
